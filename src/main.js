@@ -1,9 +1,8 @@
-
-
 $ = jQuery = require('jquery');
 var React = require('react');
 
 var Home = require('./components/homePage');
+var Authors = require('./components/author/authorPage');
 var About = require('./components/about/aboutPage');
 var Header = require('./components/common/header');
 
@@ -13,11 +12,12 @@ var Header = require('./components/common/header');
         render: function(){
             var Child;
 
-            if(this.props.route === 'about'){
-                Child = About;
-            }else{
-                Child = Home;
-            }
+            var pages = [];
+            pages[''] = Home;
+            pages['about'] = About;
+            pages['authors'] = Authors;
+
+            Child = pages[this.props.route];
 
             return (
                 <div>
