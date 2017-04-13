@@ -1,4 +1,4 @@
-"use strinct";
+"use strict";
 
 var Dispatcher = require('../dispatcher/appDispatcher');
 var ActionTypes = require('../constants/actionTypes');
@@ -9,7 +9,7 @@ var CHANGE_EVENT = 'change';
 
 var _authors = [];
 
-var AuthorStore = assign({},EventEmitter.prototype,{
+var AuthorStore = assign({}, EventEmitter.prototype, {
     addChangeListener: function(callback){
         this.on(CHANGE_EVENT, callback);
     },
@@ -25,7 +25,7 @@ var AuthorStore = assign({},EventEmitter.prototype,{
     },
 
     getAuthorById: function(id){
-        return _.find(_authors,{id : id});
+        return _.find(_authors, {id: id});
     }
 });
 
@@ -37,7 +37,6 @@ Dispatcher.register(function(action){
         _authors.push(action.author);
         AuthorStore.emitChange();
     }
-
-
-
 });
+
+module.exports = AuthorStore;
