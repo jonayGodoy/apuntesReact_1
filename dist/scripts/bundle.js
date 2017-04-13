@@ -50250,6 +50250,7 @@ module.exports = require('./lib/React');
 var Dispatcher = require('../dispatcher/appDispatcher');
 var AuthorApi = require('../api/authorApi');
 var ActionTypes = require('../constants/actionTypes');
+var _ = require('lodash');
 
 var AuthorActions = {
     createAuthor: function(author){
@@ -50259,12 +50260,21 @@ var AuthorActions = {
                 _authors.push(AuthorApi.saveAuthor(author));
             }
         });
+    },
+    updateAuthor: function(author){
+        Dispatcher.dispatch({
+            actionType: function(_authors){
+                var existingAuthor = _.find(_authors, {id: author.id});
+                var existingAuthorIndex = _.indexOf(_authors, existingAuthor);
+                _authors.splice(existingAuthorIndex, 1, author);
+            }
+        });
     }
 };
 
 module.exports = AuthorActions;
 
-},{"../api/authorApi":206,"../constants/actionTypes":218,"../dispatcher/appDispatcher":219}],205:[function(require,module,exports){
+},{"../api/authorApi":206,"../constants/actionTypes":218,"../dispatcher/appDispatcher":219,"lodash":6}],205:[function(require,module,exports){
 "use strict";
 
 var Dispatcher = require('../dispatcher/appDispatcher');
@@ -50611,7 +50621,11 @@ var ManagerAuthorPage = React.createClass({displayName: "ManagerAuthorPage",
            return;
         }
 
-        AuthorActions.createAuthor(this.state.author);
+        if(this.state.author.id){
+            AuthorActions.updateAuthor(this.state.author);
+        }else{
+            AuthorActions.createAuthor(this.state.author);
+        }
         this.setState({dirty: false});
         toastr.success('Author saved.');
         this.transitionTo('authors');
