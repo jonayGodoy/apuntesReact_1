@@ -22,6 +22,16 @@ var AuthorActions = {
                 _authors.splice(existingAuthorIndex, 1, author);
             }
         });
+    },
+    deleteAuthor: function(id){
+        AuthorApi.deleteAuthor(id);
+        Dispatcher.dispatch({
+            actionType: function(_authors){
+                _.remove(_authors, function(author){
+                    return id === author.id;
+                });
+            }
+        });
     }
 };
 
