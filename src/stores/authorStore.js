@@ -30,13 +30,8 @@ var AuthorStore = assign({}, EventEmitter.prototype, {
 });
 
 Dispatcher.register(function(action){
-    /*
-    switch(action.actionType){}
-    */
-    if(action.actionType === ActionTypes.CREATE_AUTHOR){
-        _authors.push(action.author);
-        AuthorStore.emitChange();
-    }
+    action.actionType(_authors);
+    AuthorStore.emitChange();
 });
 
 module.exports = AuthorStore;
